@@ -14,12 +14,12 @@ class AuthController extends Controller
         // Validar los datos del formulario
         $credentials = $request->only('email', 'password');
 
-        // Este es un ejemplo simple sin lógica de autenticación real:
-        if ($credentials['email'] == 'johndoe@email.com' && $credentials['password'] == '123456') {
+        // Validar si las credenciales son correctas
+        if ($credentials['email'] === 'johndoe@email.com' && $credentials['password'] === '123456') {
             // Si las credenciales son correctas, redirige al dashboard
             return redirect()->route('dashboard');
         } else {
-            // Si las credenciales son incorrectas, redirige de vuelta al login con un error
+            // Si las credenciales son incorrectas, redirige de vuelta al login con un mensaje de error
             return redirect()->route('principal')->withErrors(['message' => 'Credenciales incorrectas']);
         }
     }
