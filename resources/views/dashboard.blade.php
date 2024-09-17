@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ asset('css/estilo2.css') }}">
+    <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
+    <title>@yield('title', 'Daga Dashboard')</title>
+</head>
+
+<body>
+    <nav class="sidebar close">
+        <header>
+            <div class="image-text">
+                <span class="image">
+                    <img src="{{ asset('imagenes/dagafot.png') }}" alt="Logo">
+                </span>
+
+                <div class="text logo-text">
+                    <span class="name"></span>
+                    <span class="profession">Daga Soluciones</span>
+                </div>
+            </div>
+
+            <i class='bx bx-chevron-right toggle'></i>
+        </header>
+
+        <div class="menu-bar">
+            <div class="menu">
+                <li class="nav-link">
+                    <a href="{{ url('/dashboard2') }}">
+                        <i class='bx bx-home-alt icon'></i>
+                        <span class="text nav-text">Dashboard</span>
+                    </a>
+                </li>
+
+                <li class="nav-link">
+                    <a href="{{ url('/cliente') }}">
+                        <i class='bx bx-user icon'></i>
+                        <span class="text nav-text">Clientes</span>
+                    </a>
+                </li>
+
+                <li class="nav-link">
+                    <a href="{{ url('/factura') }}">
+                        <i class='bx bx-receipt icon'></i>
+                        <span class="text nav-text">Factura</span>
+                    </a>
+                </li>
+
+                <li class="nav-link">
+                    <a href="{{ url('/presupuesto') }}">
+                        <i class='bx bx-calculator icon'></i>
+                        <span class="text nav-text">Presupuesto</span>
+                    </a>
+                </li>
+
+                <li class="nav-link">
+                    <a href="{{ url('/informes') }}">
+                        <i class='bx bx-file icon'></i>
+                        <span class="text nav-text">Informes</span>
+                    </a>
+                </li>
+            </div>
+
+            <div class="bottom-content">
+                <li>
+                    <a href="{{ url('/') }}">
+                        <i class='bx bx-log-out icon'></i>
+                        <span class="text nav-text">Cerrar Sesión</span>
+                    </a>
+                </li>
+
+                <li class="mode">
+                    <div class="sun-moon">
+                        <i class='bx bx-moon icon moon'></i>
+                        <i class='bx bx-sun icon sun'></i>
+                    </div>
+                    <span class="mode-text text">Modo oscuro</span>
+
+                    <div class="toggle-switch">
+                        <span class="switch"></span>
+                    </div>
+                </li>
+            </div>
+        </div>
+    </nav>
+
+ 
+    <section class="home">
+
+        @yield('content')
+    </section>
+
+
+    <script src="{{ asset('js/script.js') }}"></script>
+</body>
+</html>
