@@ -14,18 +14,9 @@ Route::get('/', function () {
 })->name('principal');
 
 
-
 Route::post('/', [AuthController::class, 'login'])->name('principal.submit');
-
-
-
-// Ruta para el dashboard
-Route::get('/dashboard', function () {
-    return view('dashboard'); 
-})->name('dashboard');
-
+Route::get('/dashboard2', [Dashboard2Controller::class, 'index'])->name('dashboard2');
 Route::get('/cliente', [ClienteController::class, 'index']);
 Route::get('/factura', [FacturaController::class, 'index']);
 Route::get('/informes', [informesController::class, 'index']);
 Route::get('/presupuesto', [PresupuestoController::class, 'index']);
-Route::get('/dashboard2', [Dashboard2Controller::class, 'index']);

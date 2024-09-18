@@ -300,3 +300,53 @@ body.dark .switch::before{
 body.dark .home .text{
     color: var(--text-color);
 }
+
+
+
+.home {
+    display: flex;
+    flex-direction: column; /* Asegura que los elementos se apilen verticalmente */
+    padding: 20px;
+    position: relative; /* Necesario para el contenedor principal */
+}
+/* Estilo para colocar la sección de bienvenida en la esquina superior derecha */
+.home::before {
+    content: '';
+    display: block;
+    height: 60px; /* Ajusta según el tamaño de tu sección de bienvenida */
+    margin-bottom: 20px; /* Espacio debajo de la sección de bienvenida */
+}
+
+/* Ajustes para la sección de bienvenida */
+.welcome-section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+
+}
+
+.welcome-text {
+    font-size: 16px;
+    color: #2F3538;
+    font-weight: bold;
+}
+
+.profile-image {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.profile-image img {
+    width: 100%;
+    height: auto;
+}
+
+
+
+
+

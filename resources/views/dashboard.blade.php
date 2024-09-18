@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ asset('css/estilo2.css') }}">
     <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <title>@yield('title', 'Daga Dashboard')</title>
 </head>
 
@@ -13,9 +15,11 @@
     <nav class="sidebar close">
         <header>
             <div class="image-text">
+            <a href="{{ url('/dashboard2') }}" class="logo-link">
                 <span class="image">
                     <img src="{{ asset('imagenes/dagafot.png') }}" alt="Logo">
                 </span>
+            </a>
 
                 <div class="text logo-text">
                     <span class="name"></span>
@@ -86,13 +90,18 @@
             </div>
         </div>
     </nav>
-
- 
+    
     <section class="home">
+        <!-- Sección de bienvenida añadida aquí -->
+        <div class="welcome-section">
+            <span class="welcome-text">Bienvenido, Daga Admin</span>
+            <div class="profile-image">
+                <img src="{{ asset('imagenes/monin1.jpeg') }}" alt="Imagen de perfil">
+            </div>
+        </div>
 
         @yield('content')
     </section>
-
 
     <script src="{{ asset('js/script.js') }}"></script>
 </body>
