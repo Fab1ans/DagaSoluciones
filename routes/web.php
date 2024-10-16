@@ -21,13 +21,16 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/cliente', [ClienteController::class, 'index']);
     Route::get('/factura', [FacturaController::class, 'index']);
     Route::get('/informes', [InformesController::class, 'index']);
-    Route::get('/presupuesto', [PresupuestoController::class, 'index']);
-});
+    Route::get('/presupuesto', [PresupuestoController::class, 'index'])->name('presupuestos.index');
 
 //ruta para crear presupuesto
 Route::post('/presupuesto/create', [PresupuestoController::class, 'create'])->name('presupuestos.create');
 //ruta  para mostrar detalle presupuesto
+Route::post('/presupuesto/create', [PresupuestoController::class, 'create'])->name('presupuestos.create');
 Route::get('/presupuesto/detalles/{idPresu}', [PresupuestoController::class, 'detalles'])->name('presupuestos.detalles');
+Route::get('/presupuesto/edit/{idPresu}', [PresupuestoController::class, 'edit'])->name('presupuestos.edit');
+Route::post('/presupuesto/update/{idPresu}', [PresupuestoController::class, 'update'])->name('presupuestos.update');
+Route::post('/presupuesto/delete/{idPresu}', [PresupuestoController::class, 'delete'])->name('presupuestos.delete');
 
 //ruta agregar nuevo cliente
 Route::post("/registrar-cliente", [ClienteController::class, "create"])->name("crud.create");
@@ -42,6 +45,10 @@ Route::get('/informes', [InformesController::class, 'index'])->name('informes.in
 Route::post('/informes/create', [InformesController::class, 'create'])->name('informes.create');
 Route::post('/informes/update/{id}', [InformesController::class, 'update'])->name('informes.update');
 Route::post('/informes/delete/{id}', [InformesController::class, 'destroy'])->name('informes.destroy');
+
+});
+
+
 
 
 
