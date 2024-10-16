@@ -13,6 +13,9 @@
     <title>Presupuestos</title>
     <link rel="stylesheet" href="{{ asset('css/factura.css') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/65c5954a63.js" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 </head>
 
 <body>
@@ -34,9 +37,11 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
+                    
                     <h1 class="modal-title fs-5" id="modalEditarLabel">Registrar nuevo presupuesto</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
+         
                 <div class="modal-body">
                     <form action="{{ route('presupuestos.create') }}" method="POST">
                         @csrf
@@ -138,13 +143,13 @@
                         <td>{{ $item->descripcionPres }}</td>
                         <td>{{ $item->Nombre }}</td>
                         <td>
-                            <button class="btn btn-info btn-sm" onclick="verDetalles({{ $item->idPresu }})" data-bs-toggle="modal" data-bs-target="#modalVerDetalles">Ver Detalles</button>
+                            <button class="btn btn-warning btn-sm" onclick="verDetalles({{ $item->idPresu }})" data-bs-toggle="modal" data-bs-target="#modalVerDetalles">Ver Detalles</button>
                         </td>
                         <td>
-                            <a href="" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i></a>
+                            <button class="btn btn-primary btn-sm"><i class="fa fa-edit"></i></button>
                         </td>
                         <td>
-                            <a href="" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>
+                            <button class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
                         </td>
                     </tr>
                 @endforeach
