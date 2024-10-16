@@ -21,11 +21,12 @@ class ClienteController extends Controller
 
     public function create(Request $request){
         try {
-            $sql=DB::insert(" insert into cliente(Nombre,Direccion,RUC_DNI)values(?,?,?) ", 
+            $sql=DB::insert(" insert into cliente(Nombre,Direccion,entidad,RUC_DNI)values(?,?,?,?) ", 
         [
         
             $request->txtNombre,
             $request->txtDireccion,
+            $request->txtentidad,
             $request->txtRUC_DNI,
 
         ]);
@@ -44,14 +45,14 @@ class ClienteController extends Controller
 
     public function update(Request $request){
         try {
-            $sql=DB::update(" update cliente set Nombre=?, Direccion=?, RUC_DNI=? where idCliente=?", [
+            $sql=DB::update(" update cliente set Nombre=?, Direccion=?, entidad=?, RUC_DNI=? where idCliente=?", [
           
             $request->txtNombre,
             $request->txtDireccion,
+            $request->txtentidad,
             $request->txtRUC_DNI,
             $request->txtidCliente,
           
-
 
             ]);
             if ($sql==0) {

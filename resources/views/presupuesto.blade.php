@@ -3,7 +3,6 @@
 @section('title', 'Presupuestos')
 
 @section('content')
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,10 +13,7 @@
     <link rel="stylesheet" href="{{ asset('css/factura.css') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/65c5954a63.js" crossorigin="anonymous"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 </head>
-
 <body>
     <div class="container mt-5">
         <div class="d-flex justify-content-between mb-3">
@@ -33,15 +29,13 @@
     @endif
 
     <!-- Modal para agregar nuevo presupuesto -->
-    <div class="modal fade" id="modalRegistrar" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
+    <div class="modal fade" id="modalRegistrar" tabindex="-1" aria-labelledby="modalRegistrarLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    
-                    <h1 class="modal-title fs-5" id="modalEditarLabel">Registrar nuevo presupuesto</h1>
+                    <h5 class="modal-title" id="modalRegistrarLabel">Registrar nuevo presupuesto</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-         
                 <div class="modal-body">
                     <form action="{{ route('presupuestos.create') }}" method="POST">
                         @csrf
@@ -64,9 +58,8 @@
 
                         <h5>Detalles del Presupuesto</h5>
                         <div id="detalles-container">
-                            <!-- Aquí puedes agregar múltiples detalles del presupuesto -->
                             <div class="detalle mb-3">
-                                <label for="descriptabla" class="form-label">Descripción Detalle</label>
+                                <label for="descriptabla" class="form-label">Descripción Detalle </label>
                                 <input type="text" class="form-control" name="detalles[0][descriptabla]" required>
 
                                 <label for="unidadMed" class="form-label">Unidad de Medida</label>
@@ -91,9 +84,7 @@
                                 <input type="text" class="form-control" name="detalles[0][garantia]">
                             </div>
                         </div>
-
                         <button type="button" id="add-detail" class="btn btn-secondary">Agregar Detalle</button>
-
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                             <button type="submit" class="btn btn-primary">Registrar</button>
@@ -109,11 +100,28 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="modalVerDetallesLabel">Detalles del Presupuesto</h1>
+                    <h5 class="modal-title" id="modalVerDetallesLabel">Detalles del Presupuesto </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" id="detalles-content">
-                    <!-- Aquí se cargarán los detalles dinámicamente -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Editar Presupuesto -->
+    <div class="modal fade" id="modalEditarPresupuesto" tabindex="-1" aria-labelledby="modalEditarPresupuestoLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalEditarPresupuestoLabel">Editar Presupuesto</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="editar-presupuesto-content">
+                    
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
@@ -146,11 +154,35 @@
                             <button class="btn btn-warning btn-sm" onclick="verDetalles({{ $item->idPresu }})" data-bs-toggle="modal" data-bs-target="#modalVerDetalles">Ver Detalles</button>
                         </td>
                         <td>
-                            <button class="btn btn-primary btn-sm"><i class="fa fa-edit"></i></button>
+                            <button class="btn btn-primary btn-sm" onclick="editarPresupuesto({{ $item->idPresu }})" data-bs-toggle="modal" data-bs-target="#modalEditarPresupuesto"><i class="fa fa-edit"></i></button>
                         </td>
                         <td>
-                            <button class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
-                        </td>
+    <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modalEliminar{{ $item->idPresu }}">
+        <i class="fa fa-trash"></i>
+    </button>
+</td>
+
+<!-- Modal para eliminar presupuesto -->
+<div class="modal fade" id="modalEliminar{{ $item->idPresu }}" tabindex="-1" aria-labelledby="modalEliminarLabel{{ $item->idPresu }}" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalEliminarLabel{{ $item->idPresu }}">Eliminar Presupuesto</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                ¿Estás seguro de que deseas eliminar el presupuesto con ID: {{ $item->idPresu }}? Esta acción no se puede deshacer.
+            </div>
+            <div class="modal-footer">
+                <form action="{{ route('presupuestos.delete', $item->idPresu) }}" method="POST">
+                    @csrf
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
                     </tr>
                 @endforeach
             </tbody>
@@ -198,9 +230,16 @@
                     document.getElementById('detalles-content').innerHTML = data;
                 });
         }
+
+        function editarPresupuesto(idPresu) {
+            fetch(`/presupuesto/edit/${idPresu}`)
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('editar-presupuesto-content').innerHTML = data;
+                })
+                .catch(error => console.error('Error al cargar el formulario de edición:', error));
+        }
     </script>
 </body>
-
 </html>
-
 @endsection

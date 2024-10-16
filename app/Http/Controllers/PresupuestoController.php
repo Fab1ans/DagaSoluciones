@@ -11,6 +11,7 @@ use App\Http\Controllers\Controller;
 
 class PresupuestoController extends Controller
 {
+    
     public function index()
     {
         // Obtener presupuestos y sus respectivos clientes
@@ -25,16 +26,44 @@ class PresupuestoController extends Controller
         return view('presupuesto', compact('presupuestos', 'clientes'));
     }
 
-    public function create(Request $request)
+    public function edit($idPresu)
     {
-        // Insertar un nuevo presupuesto
-        $presupuestoId = DB::table('presupuesto')->insertGetId([
-            'fechaPresu' => $request->fechaPresu,
-            'descripcionPres' => $request->descripcionPres,
-            'idCliente' => $request->idCliente,
-        ]);
+        // Obtener el presupuesto y sus detalles
+        $presupuesto = DB::table('presupuesto')
+            ->join('cliente', 'presupuesto.idCliente', '=', 'cliente.idCliente')
+            ->where('presupuesto.idPresu', $idPresu)
+            ->select('presupuesto.*', 'cliente.Nombre')
+            ->first();
 
-        // Insertar los detalles del presupuesto
+        if (!$presupuesto) {
+            return abort(404, 'Presupuesto no encontrado.');
+        }
+
+        $clientes = DB::table('cliente')->get();
+
+        // Obtener detalles del presupuesto
+        $detalles = DB::table('detallepresu')
+            ->where('idPresu', $idPresu)
+            ->get();
+
+        return view('presupuesto_edit_modal', compact('presupuesto', 'clientes', 'detalles'));
+    }
+
+    public function update(Request $request, $idPresu)
+    {
+        // Actualizar el presupuesto
+        DB::table('presupuesto')
+            ->where('idPresu', $idPresu)
+            ->update([
+                'fechaPresu' => $request->fechaPresu,
+                'descripcionPres' => $request->descripcionPres,
+                'idCliente' => $request->idCliente,
+            ]);
+
+        // Eliminar detalles antiguos
+        DB::table('detallepresu')->where('idPresu', $idPresu)->delete();
+
+        // Insertar detalles actualizados
         foreach ($request->detalles as $detalle) {
             DB::table('detallepresu')->insert([
                 'descriptabla' => $detalle['descriptabla'],
@@ -45,30 +74,38 @@ class PresupuestoController extends Controller
                 'TotalPres' => $detalle['TotalPres'],
                 'nota' => $detalle['nota'],
                 'garantia' => $detalle['garantia'],
-                'idPresu' => $presupuestoId,
+                'idPresu' => $idPresu,
             ]);
         }
 
-        return back()->with('Correcto', 'Presupuesto registrado correctamente con detalles');
+        return redirect()->route('presupuestos.index')->with('Correcto', 'Presupuesto actualizado correctamente');
+    }
+
+    public function delete($idPresu)
+    {
+        DB::table('detallepresu')->where('idPresu', $idPresu)->delete();
+        DB::table('presupuesto')->where('idPresu', $idPresu)->delete();
+
+        return back()->with('Correcto', 'Presupuesto eliminado correctamente');
     }
 
     public function detalles($idPresu)
     {
-        // Obtener presupuesto específico y sus detalles
         $presupuesto = DB::table('presupuesto')
             ->join('cliente', 'presupuesto.idCliente', '=', 'cliente.idCliente')
             ->where('presupuesto.idPresu', $idPresu)
             ->select('presupuesto.*', 'cliente.Nombre')
             ->first();
-    
+
         if (!$presupuesto) {
             return abort(404, 'Presupuesto no encontrado.');
         }
-    
+
+        // Obtener los detalles del presupuesto
         $detalles = DB::table('detallepresu')
             ->where('idPresu', $idPresu)
             ->get();
-    
+
         return view('presupuesto_detalles_modal', compact('presupuesto', 'detalles'));
     }
 }
