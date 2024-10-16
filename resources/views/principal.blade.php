@@ -12,11 +12,20 @@
         <div class="login-box">
             <div class="loginleft">
                 <h2>Iniciar Sesión</h2>
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
                 <form action="{{ route('principal.submit') }}" method="POST">
                     @csrf
                     <div class="input-group">
                         <label for="email">Usuario</label>
-                        <input type="email" id="email" name="email" placeholder="johndoe@email.com" required>
+                        <input type="email" id="email" name="email" placeholder="email@email.com" required>
                     </div>
                     <div class="input-group">
                         <label for="password">Contraseña</label>
@@ -32,3 +41,4 @@
     </div>
 </body>
 </html>
+
