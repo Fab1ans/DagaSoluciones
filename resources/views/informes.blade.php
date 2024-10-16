@@ -3,94 +3,188 @@
 @section('title', 'Informes')
 
 @section('content')
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Informes</title>
     <link rel="stylesheet" href="{{ asset('css/factura.css') }}">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://kit.fontawesome.com/65c5954a63.js" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 </head>
+
 <body>
     <div class="container mt-5">
         <div class="d-flex justify-content-between mb-3">
-            <!-- Búsqueda por número de informe -->
-            <input type="text" class="form-control w-25" placeholder="Buscar Informe">
+            <input type="text" class="form-control w-25" placeholder="Buscar por descripción o cliente">
         </div>
-    
-        <!-- Formulario para agregar o editar informe -->
-        <div class="card mb-4">
-            <div class="card-header">
-                <h5 class="card-title">Agregar/Editar Informe</h5>
-            </div>
-            <div class="card-body">
-                <form action="/informes" method="POST">
-                    @csrf
-                    <div class="row mb-3">
-                        <label for="info" class="col-sm-2 col-form-label">Información</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="info" name="info" required>
+    </div>
+
+    @if (session("Correcto"))
+    <div class="alert alert-success">{{session("Correcto")}}</div>
+    @endif
+    @if (session("Incorrecto"))
+    <div class="alert alert-danger">{{session("Incorrecto")}}</div>
+    @endif
+    <!-- Modal para Registrar nuevo Informe -->
+    <div class="modal fade" id="modalInforme" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="modalEditarLabel">Registrar nuevo Informe</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{route("informes.create")}}" method="POST">
+                        @csrf
+                        <div class="mb-3">
+                            <label for="fechaInfo" class="form-label">Fecha</label>
+                            <input type="date" class="form-control" name="fechaInfo">
                         </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label for="fecha" class="col-sm-2 col-form-label">Fecha</label>
-                        <div class="col-sm-10">
-                            <input type="date" class="form-control" id="fecha" name="fecha" required>
+                        <div class="mb-3">
+                            <label for="descripcion" class="form-label">Descripción</label>
+                            <input type="text" class="form-control" name="descripcion">
                         </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label for="archivo" class="col-sm-2 col-form-label">Archivo</label>
-                        <div class="col-sm-10">
-                            <input type="file" class="form-control" id="archivo" name="archivo">
+                        <div class="mb-3">
+                            <label for="idCliente" class="form-label">Cliente</label>
+                            <select class="form-control" name="idCliente">
+                                @foreach($clientes as $cliente)
+                                <option value="{{ $cliente->idCliente }}">{{ $cliente->Nombre }}</option>
+                                @endforeach
+                            </select>
                         </div>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col-sm-10 offset-sm-2">
-                            <button type="submit" class="btn btn-primary">Guardar</button>
-                            <button type="reset" class="btn btn-secondary">Cancelar</button>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">Registrar</button>
                         </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
-    
-        <!-- Tabla de informes -->
+    </div>
+
+    <div class="p-5 table-responsive">
+        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalInforme">Registrar nuevo
+            informe</button>
         <table class="table table-bordered">
             <thead class="table-light">
                 <tr>
-                    <th>Información</th>
                     <th>Fecha</th>
-                    <th>Descargar</th>
+                    <th>Descripción</th>
+                    <th>Cliente</th>
                     <th>Editar</th>
                     <th>Eliminar</th>
                 </tr>
             </thead>
             <tbody>
-                <!-- Ejemplo de un informe, puedes hacer esto dinámico con datos desde la base -->
+                @foreach ($informes as $item)
                 <tr>
-                    <td>quiroga 502</td>
-                    <td>12/04/2024</td>
+                    <td>{{ $item->fechaInfo }}</td>
+                    <td>{{ $item->descripcion }}</td>
+                    <td>{{ $item->Nombre }}</td>
+                    <!-- Boton para Editar  Informe -->
                     <td>
-                        <button class="btn btn-warning btn-sm"><i class="fa-solid fa-download"></i></button>
+                        <button class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                            data-bs-target="#modalEditar{{$item->idInforme}}">
+                            <i class="fa fa-edit"></i>
+                        </button>
                     </td>
+
+                    <!-- Modal para editar informe -->
+                    <div class="modal fade" id="modalEditar{{$item->idInforme}}" tabindex="-1"
+                        aria-labelledby="modalEditarLabel{{$item->idInforme}}" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="modalEditarLabel{{$item->idInforme}}">Editar
+                                        Informe</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="{{ route('informes.update', $item->idInforme) }}" method="POST">
+                                        @csrf
+                                        <div class="mb-3">
+                                            <label for="fechaInfo" class="form-label">Fecha</label>
+                                            <input type="date" class="form-control" name="fechaInfo"
+                                                value="{{ $item->fechaInfo }}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="descripcion" class="form-label">Descripción</label>
+                                            <input type="text" class="form-control" name="descripcion"
+                                                value="{{ $item->descripcion }}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="idCliente" class="form-label">Cliente</label>
+                                            <select class="form-control" name="idCliente">
+                                                @foreach($clientes as $cliente)
+                                                <option value="{{ $cliente->idCliente }}"
+                                                    {{ $cliente->idCliente == $item->idCliente ? 'selected' : '' }}>
+                                                    {{ $cliente->Nombre }}
+                                                </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Cancelar</button>
+                                            <button type="submit" class="btn btn-primary">Actualizar</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Botón para abrir el modal de eliminar -->
                     <td>
-                        <button class="btn btn-primary btn-sm"><i class="fa fa-edit"></i></button>
+                        <button class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                            data-bs-target="#modalEliminar{{$item->idInforme}}">
+                            <i class="fa fa-trash"></i>
+                        </button>
                     </td>
-                    <td>
-                        <button class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
-                    </td>
+
+                    <!-- Modal para eliminar informe -->
+                <div class="modal fade" id="modalEliminar{{$item->idInforme}}" tabindex="-1" aria-labelledby="modalEliminarLabel{{$item->idInforme}}" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="modalEliminarLabel{{$item->idInforme}}">Eliminar Informe</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                ¿Estás seguro de que deseas eliminar este informe?
+                            </div>
+                            <div class="modal-footer">
+                                <form action="{{ route('informes.destroy', $item->idInforme) }}" method="POST">
+                                    @csrf
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
                 </tr>
-                <!-- Más filas -->
+                @endforeach
             </tbody>
         </table>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
+    </script>
 </body>
+
 </html>
+
 @endsection

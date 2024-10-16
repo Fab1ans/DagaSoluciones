@@ -32,3 +32,10 @@ Route::post("/registrar-cliente", [ClienteController::class, "create"])->name("c
 Route::post("/modificar-cliente", [ClienteController::class, "update"])->name("crud.update");
 //ruta eliminar cliente 
 Route::get("/eliminar-cliente-{id}", [ClienteController::class, "delete"])->name("crud.delete");
+
+
+// Ruta para la vista de informes
+Route::get('/informes', [InformesController::class, 'index'])->name('informes.index');
+Route::post('/informes/create', [InformesController::class, 'create'])->name('informes.create');
+Route::post('/informes/update/{id}', [InformesController::class, 'update'])->name('informes.update');
+Route::post('/informes/delete/{id}', [InformesController::class, 'destroy'])->name('informes.destroy');
