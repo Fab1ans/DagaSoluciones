@@ -19,7 +19,12 @@ Route::get('/dashboard2', [Dashboard2Controller::class, 'index'])->name('dashboa
 Route::get('/cliente', [ClienteController::class, 'index']);
 Route::get('/factura', [FacturaController::class, 'index']);
 Route::get('/informes', [informesController::class, 'index']);
+//ruta para presupuesto
 Route::get('/presupuesto', [PresupuestoController::class, 'index']);
+//ruta para crear presupuesto
+Route::post('/presupuesto/create', [PresupuestoController::class, 'create'])->name('presupuestos.create');
+//ruta  para mostrar detalle presupuesto
+Route::get('/presupuesto/detalles/{idPresu}', [PresupuestoController::class, 'detalles'])->name('presupuestos.detalles');
 
 //ruta agregar nuevo cliente
 Route::post("/registrar-cliente", [ClienteController::class, "create"])->name("crud.create");
