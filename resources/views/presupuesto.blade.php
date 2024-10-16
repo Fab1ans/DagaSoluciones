@@ -48,6 +48,15 @@
                             <input type="text" class="form-control" name="descripcionPres">
                         </div>
                         <div class="mb-3">
+    <label for="servicios" class="form-label">Servicio</label>
+    <select class="form-control" name="servicios">
+        <option value="Mantenimiento">Mantenimiento</option>
+        <option value="Instalación">Instalación</option>
+        <option value="Reparación">Reparación</option>
+    </select>
+</div>
+
+                        <div class="mb-3">
                             <label for="idCliente" class="form-label">Cliente</label>
                             <select class="form-control" name="idCliente">
                                 @foreach($clientes as $cliente)
@@ -136,20 +145,26 @@
         <table class="table table-bordered">
             <thead class="table-light">
                 <tr>
-                    <th>Fecha</th>
-                    <th>Descripción</th>
-                    <th>Cliente</th>
-                    <th>Detalles</th>
-                    <th>Editar</th>
-                    <th>Eliminar</th>
+                <th>Fecha</th>
+                <th>Descripción</th>
+                <th>Servicio</th>
+                <th>Cliente</th>
+                <th>Dirección</th>
+                <th>Entidad</th>
+                <th>Detalles</th>
+                <th>Editar</th>
+                <th>Eliminar</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($presupuestos as $item)
                     <tr>
-                        <td>{{ $item->fechaPresu }}</td>
-                        <td>{{ $item->descripcionPres }}</td>
-                        <td>{{ $item->Nombre }}</td>
+                    <td>{{ $item->fechaPresu }}</td>
+                    <td>{{ $item->descripcionPres }}</td>
+                    <td>{{ $item->servicios }}</td>
+                    <td>{{ $item->Nombre }}</td>
+                    <td>{{ $item->Direccion }}</td>
+                    <td>{{ $item->entidad }}</td>
                         <td>
                             <button class="btn btn-warning btn-sm" onclick="verDetalles({{ $item->idPresu }})" data-bs-toggle="modal" data-bs-target="#modalVerDetalles">Ver Detalles</button>
                         </td>

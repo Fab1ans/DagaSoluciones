@@ -9,6 +9,14 @@
         <input type="text" class="form-control" name="descripcionPres" value="{{ $presupuesto->descripcionPres }}">
     </div>
     <div class="mb-3">
+        <label for="servicios" class="form-label">Servicio</label>
+        <select class="form-control" name="servicios">
+            <option value="Mantenimiento" {{ $presupuesto->servicios == 'Mantenimiento' ? 'selected' : '' }}>Mantenimiento</option>
+            <option value="Instalación" {{ $presupuesto->servicios == 'Instalación' ? 'selected' : '' }}>Instalación</option>
+            <option value="Reparación" {{ $presupuesto->servicios == 'Reparación' ? 'selected' : '' }}>Reparación</option>
+        </select>
+    </div>
+    <div class="mb-3">
         <label for="idCliente" class="form-label">Cliente</label>
         <select class="form-control" name="idCliente">
             @foreach($clientes as $cliente)
