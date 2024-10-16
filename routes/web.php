@@ -15,12 +15,15 @@ Route::get('/', function () {
 
 
 Route::post('/', [AuthController::class, 'login'])->name('principal.submit');
-Route::get('/dashboard2', [Dashboard2Controller::class, 'index'])->name('dashboard2');
-Route::get('/cliente', [ClienteController::class, 'index']);
-Route::get('/factura', [FacturaController::class, 'index']);
-Route::get('/informes', [informesController::class, 'index']);
-//ruta para presupuesto
-Route::get('/presupuesto', [PresupuestoController::class, 'index']);
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/dashboard2', [Dashboard2Controller::class, 'index'])->name('dashboard2');
+    Route::get('/cliente', [ClienteController::class, 'index']);
+    Route::get('/factura', [FacturaController::class, 'index']);
+    Route::get('/informes', [InformesController::class, 'index']);
+    Route::get('/presupuesto', [PresupuestoController::class, 'index']);
+});
+
 //ruta para crear presupuesto
 Route::post('/presupuesto/create', [PresupuestoController::class, 'create'])->name('presupuestos.create');
 //ruta  para mostrar detalle presupuesto
@@ -39,3 +42,7 @@ Route::get('/informes', [InformesController::class, 'index'])->name('informes.in
 Route::post('/informes/create', [InformesController::class, 'create'])->name('informes.create');
 Route::post('/informes/update/{id}', [InformesController::class, 'update'])->name('informes.update');
 Route::post('/informes/delete/{id}', [InformesController::class, 'destroy'])->name('informes.destroy');
+
+
+
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');

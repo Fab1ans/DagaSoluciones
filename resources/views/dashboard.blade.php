@@ -69,12 +69,15 @@
             </div>
 
             <div class="bottom-content">
-                <li>
-                    <a href="{{ url('/') }}">
-                        <i class='bx bx-log-out icon'></i>
-                        <span class="text nav-text">Cerrar Sesión</span>
-                    </a>
-                </li>
+            <li>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                    @csrf
+                </form>
+                <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                    <i class='bx bx-log-out icon'></i>
+                    <span class="text nav-text">Cerrar Sesión</span>
+                </a>
+            </li>
 
                 <li class="mode">
                     <div class="sun-moon">
@@ -94,10 +97,12 @@
     <section class="home">
         <!-- Sección de bienvenida añadida aquí -->
         <div class="welcome-section">
-            <span class="welcome-text">Bienvenido, Daga Admin</span>
+                <span class="welcome-text">
+                Bienvenido, {{ session('nombre', 'Invitado') }}
+            </span> 
             <div class="profile-image">
-                <img src="{{ asset('imagenes/monin1.jpeg') }}" alt="Imagen de perfil">
-            </div>
+                   <img src="{{ asset(session('imagen')) }}" alt="Imagen de perfil">
+             </div>
         </div>
 
         @yield('content')
