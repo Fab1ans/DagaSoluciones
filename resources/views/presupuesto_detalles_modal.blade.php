@@ -2,6 +2,10 @@
 <div>
     <p><strong>Fecha:</strong> {{ $presupuesto->fechaPresu }}</p>
     <p><strong>Cliente:</strong> {{ $presupuesto->Nombre }}</p>
+    <p><strong>Dirección:</strong> {{ $presupuesto->Direccion }}</p>
+<p><strong>Entidad:</strong> {{ $presupuesto->entidad }}</p>
+
+    <p><strong>Servicio:</strong> {{ $presupuesto->servicios }}</p>
     <p><strong>Descripción:</strong> {{ $presupuesto->descripcionPres }}</p>
 
     <h5>Detalles del Presupuesto:</h5>
@@ -20,3 +24,4 @@
         @endforeach
     </ul>
 </div>
+
